@@ -1,73 +1,261 @@
-# React + TypeScript + Vite
+# NotifiQ Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Operations dashboard for **NotifiQ**, a reliable multi-channel notification delivery platform.
 
-Currently, two official plugins are available:
+This React dashboard helps monitor notification delivery, inspect user notifications, replay dead-lettered notifications, send test notifications, and manage user delivery preferences.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Dashboard with live notification statistics
+- Recent notification activity view
+- Search notifications by user ID
+- Send notifications manually from the UI
+- Support for Email, In-App, and Webhook channels
+- Dead Letter Queue monitoring
+- Replay failed notifications from DLQ
+- User preference management
+- Quiet hours configuration
+- Webhook URL configuration
+- Toast-based success/error feedback
+- Environment-based backend API configuration
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Screenshots
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Dashboard
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+![Dashboard](screenshots/dashboard.png)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Send Notification
+
+![Send Notification](screenshots/send-notification.png)
+
+### Dead Letter Replay
+
+![Dead Letters](screenshots/dead-letters.png)
+
+### User Preferences
+
+![Preferences](screenshots/preferences.png)
+
+---
+
+## Tech Stack
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Axios
+- React Router DOM
+- Lucide React
+
+---
+
+## Project Structure
+
+```text
+src/
+├── api/
+│   └── api.ts
+├── components/
+│   ├── Sidebar.tsx
+│   ├── StatsCards.tsx
+│   ├── RecentNotifications.tsx
+│   ├── StatusBadge.tsx
+│   ├── PriorityBadge.tsx
+│   └── Toast.tsx
+├── constants/
+│   ├── routes.ts
+│   └── navigation.ts
+├── pages/
+│   ├── Dashboard.tsx
+│   ├── Notifications.tsx
+│   ├── DeadLetters.tsx
+│   ├── SendNotification.tsx
+│   └── Preferences.tsx
+├── services/
+│   ├── notificationService.ts
+│   ├── deadLetterService.ts
+│   └── userService.ts
+├── types/
+│   └── types.ts
+├── App.tsx
+├── main.tsx
+└── index.css
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Pages
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Dashboard
+
+Shows high-level delivery metrics such as total notifications, sent notifications, queued notifications, retrying notifications, dead-lettered notifications, skipped notifications, and unread in-app notifications.
+
+### Notifications
+
+Allows searching notifications by user ID and viewing channel, status, priority, retry count, created time, and sent time.
+
+### Dead Letters
+
+Displays notifications that exhausted retry attempts and moved to the Dead Letter Queue. Operators can replay dead-lettered notifications back into the delivery flow.
+
+### Send Notification
+
+Provides a manual notification trigger form with support for notification type, channel, priority, subject, message, and idempotency key generation.
+
+### Preferences
+
+Allows managing user-level delivery preferences including enabled channels, preferred channel, webhook URL, and quiet hours.
+
+---
+
+## Backend Integration
+
+This dashboard consumes REST APIs from the NotifiQ Spring Boot backend.
+
+Main API areas used:
+
+```text
+GET   /api/notifications/stats
+GET   /api/notifications/recent
+GET   /api/notifications/user/{userId}
+POST  /api/notifications
+GET   /api/admin/dead-letters
+POST  /api/admin/dead-letters/{id}/replay
+GET   /api/users/{userId}/preferences
+PUT   /api/users/{userId}/preferences
 ```
+
+---
+
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+For reference, keep `.env.example` committed:
+
+```env
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+---
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone <your-frontend-repo-url>
+cd notifiq-dashboard
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment
+
+Create `.env`:
+
+```env
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+### 4. Run the development server
+
+```bash
+npm run dev
+```
+
+The app will run at:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## Available Scripts
+
+```bash
+npm run dev
+```
+
+Starts the development server.
+
+```bash
+npm run build
+```
+
+Creates a production build.
+
+```bash
+npm run preview
+```
+
+Previews the production build locally.
+
+```bash
+npm run lint
+```
+
+Runs ESLint checks.
+
+---
+
+## Key Frontend Concepts Used
+
+- Component-based page structure
+- Centralized route constants
+- Axios API instance
+- Service layer for backend communication
+- Strong TypeScript response types
+- Reusable status and priority badges
+- Reusable toast component
+- Loading, success, empty, and error states
+- Form state management
+- Idempotency key generation using `crypto.randomUUID()`
+- Conditional rendering for webhook and quiet hours settings
+
+---
+
+## Idempotency Key Handling
+
+The Send Notification page generates an idempotency key using the browser API:
+
+```ts
+crypto.randomUUID();
+```
+
+This key is sent with every notification request to prevent duplicate notification creation during retries or repeated submissions.
+
+---
+
+## Related Repository
+
+Backend repository: `<add-your-backend-repo-link-here>`
+
+---
+
+## Status
+
+Frontend feature development is complete.
+
+Implemented pages:
+
+- Dashboard
+- Notifications
+- Dead Letters
+- Send Notification
+- Preferences
