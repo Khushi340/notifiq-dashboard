@@ -154,7 +154,7 @@ VITE_API_BASE_URL=http://localhost:8080
 ### 1. Clone the repository
 
 ```bash
-git clone <your-frontend-repo-url>
+git clone https://github.com/Khushi340/notifiq-dashboard
 cd notifiq-dashboard
 ```
 
@@ -244,7 +244,7 @@ This key is sent with every notification request to prevent duplicate notificati
 
 ## Related Repository
 
-Backend repository: `<add-your-backend-repo-link-here>`
+Backend repository: https://github.com/Khushi340/NotifiQ
 
 ---
 
