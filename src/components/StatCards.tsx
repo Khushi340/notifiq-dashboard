@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-import api from "../api/api";
+import { notificationService } from "../services/notificationService";
 import type { FetchState, NotificationStats } from "../types/types";
 
 type StatsCardsProps = {
@@ -91,10 +91,10 @@ export default function StatsCards({ refresh }: StatsCardsProps) {
   useEffect(() => {
     setState({ status: "loading" });
 
-    api
-      .get<NotificationStats>("/api/notifications/stats")
-      .then((response) => {
-        setState({ status: "success", data: response.data });
+    notificationService
+      .getStats()
+      .then((data) => {
+        setState({ status: "success", data });
       })
       .catch(() => {
         setState({

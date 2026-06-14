@@ -57,3 +57,24 @@ export type FetchState<T> =
   | { status: "loading" }
   | { status: "error"; message: string }
   | { status: "success"; data: T };
+
+export interface SendNotificationRequest {
+  userId: number;
+  type: string;
+  channel: string;
+  priority: string;
+  subject?: string;
+  message: string;
+  idempotencyKey: string;
+}
+
+export interface UpdatePreferenceRequest {
+  emailEnabled: boolean;
+  inAppEnabled: boolean;
+  webhookEnabled: boolean;
+  webhookUrl: string | null;
+  quietHoursEnabled: boolean;
+  quietHoursStart: string | null;
+  quietHoursEnd: string | null;
+  preferredChannel: string;
+}

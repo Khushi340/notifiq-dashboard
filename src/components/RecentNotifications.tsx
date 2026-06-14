@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 
-import api from "../api/api";
+import { notificationService } from "../services/notificationService";
 import type { FetchState, NotificationResponse } from "../types/types";
 import StatusBadge from "./StatusBadge";
 
-export default function RecentNotifications() {
+type RecentNotificationsProps = {
+  refresh: number;
+};
+
+export default function RecentNotifications({
+  refresh,
+}: RecentNotificationsProps) {
   const [state, setState] = useState<FetchState<NotificationResponse[]>>({
     status: "loading",
   });
@@ -12,12 +18,12 @@ export default function RecentNotifications() {
   useEffect(() => {
     setState({ status: "loading" });
 
-    api
-      .get<NotificationResponse[]>("/api/notifications/recent")
-      .then((response) => {
+    notificationService
+      .getRecent()
+      .then((data) => {
         setState({
           status: "success",
-          data: response.data,
+          data,
         });
       })
       .catch(() => {
@@ -26,7 +32,7 @@ export default function RecentNotifications() {
           message: "Failed to load recent notifications",
         });
       });
-  }, []);
+  }, [refresh]);
 
   return (
     <section className="space-y-4">

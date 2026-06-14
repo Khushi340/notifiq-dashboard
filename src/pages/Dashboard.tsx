@@ -31,7 +31,7 @@ export default function Dashboard() {
 
       <StatsCards refresh={refresh} />
 
-      <RecentNotifications />
+      <RecentNotifications refresh={refresh} />
     </section>
   );
 }
